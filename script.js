@@ -1,63 +1,67 @@
+let notes = [];
+let checkedNotes = [];
 
-// Notizen anzeigen lassen
-// Ich brauche Notizen
-
-let notes = ['Bananen einkaufen','Rasen mähen'];
-let deletedNotes = [];
-
-// Wann werden sie angezeigt? (am besten onload)
-function renderNotes(){
-    // Ich muss definieren, wo sie anzuzeigen sind
-    let contentRef = document.getElementById('notes-content');
+function renderNotes() {
+    let contentRef = document.getElementById("notes-content");
     contentRef.innerHTML = "";
 
-    for(let indexNote = 0; indexNote < notes.length; indexNote++){
+    for (let indexNote = 0; indexNote < notes.length; indexNote++) {
         contentRef.innerHTML += getNoteTemplate(indexNote);
     }
+
+    getLocalStorage();
 }
 
-// Notizen archivieren
-function renderDeletedNotes(){
-    let delContentRef = document.getElementById('deleted-content');
-    delContentRef.innerHTML = "";
+function getLocalStorage(){
+    let data = localStorage.getItem('notes');
+    let myArr = JSON.parse(data);
 
-    for(let indexDelNote = 0; indexDelNote < deletedNotes.length; indexDelNote++){
-        delContentRef.innerHTML += getDelNoteTemplate(indexDelNote);
+    if(myArr != null){
+        notes = myArr;
     }
 }
 
-function getNoteTemplate(indexNote){
-    return `<input type="checkbox"> ${notes[indexNote]} <button onclick="deleteNote(${indexNote})">&#x1f5d1;</button></br>`;
+function renderCheckedNotes() {
+    let checkedContentRef = document.getElementById("checked-content");
+    checkedContentRef.innerHTML = "";
+
+    for (let indexCheckedNote = 0; indexCheckedNote < checkedNotes.length; indexCheckedNote++) {
+        checkedContentRef.innerHTML += getCheckedNoteTemplate(indexCheckedNote);
+    }
 }
 
-function getDelNoteTemplate(indexDelNote){
-    return `<input type="checkbox"> ${deletedNotes[indexDelNote]} <button onclick="expungeNote(${indexDelNote})">&#x1f5d1;</button></br>`;
+function getNoteTemplate(indexNote) {
+    return `<input type="checkbox" onclick="checkNote(${indexNote})"> ${notes[indexNote]}</br>`;
 }
 
-// Notizen hinzufügen
-function addNote(){
-    // Eingabe vom User definieren (Input-Element?)
-    let noteInputRef = document.getElementById('note-input');
-    // Eingabe auslesen (Übergabe mit .value?)
+function getCheckedNoteTemplate(indexCheckedNote) {
+    return `<input type="checkbox" checked> ${checkedNotes[indexCheckedNote]} <button onclick="expungeNote(${indexCheckedNote})">&#10006;</button></br>`;
+}
+
+function addNote() {
+    let noteInputRef = document.getElementById("note-input");
     let noteInput = noteInputRef.value;
-    // Eingabe speichern
-    notes.push(noteInput);
-    // Eingabe anzeigen lassen
+
+    if(noteInputRef.value != ""){
+        notes.push(noteInput);
+        localStorage.setItem("notes", JSON.stringify(notes));
+    }
     renderNotes();
-    //Input-Feld leeren - bereit für neuen Input
+
     noteInputRef.value = "";
 }
 
-// Notizen löschen
-function deleteNote(indexNote){
-    let delNote = notes.splice(indexNote, 1);
-    deletedNotes.push(delNote);
-    renderNotes(); 
-    renderDeletedNotes();
+function checkNote(indexNote) {
+    let checkedNote = notes.splice(indexNote, 1);
+
+    checkedNotes.push(checkedNote);
+    localStorage.setItem("checkedNotes", JSON.stringify(checkedNotes));
+
+    renderNotes();
+    renderCheckedNotes();
 }
 
-function expungeNote(indexNote){
-    deletedNotes.splice(indexNote, 1);
-    renderDeletedNotes();
+function deleteNote(indexNote) {
+    checkedNotes.splice(indexNote, 1);
+    renderCheckedNotes();
 }
-
