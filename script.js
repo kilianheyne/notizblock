@@ -1,6 +1,10 @@
 let notes = [];
 let checkedNotes = [];
 
+function init(){
+    getLocalStorage();
+}
+
 function renderNotes() {
     let contentRef = document.getElementById("notes-content");
     contentRef.innerHTML = "";
@@ -8,16 +12,14 @@ function renderNotes() {
     for (let indexNote = 0; indexNote < notes.length; indexNote++) {
         contentRef.innerHTML += getNoteTemplate(indexNote);
     }
-
-    getLocalStorage();
 }
 
 function getLocalStorage(){
-    let data = localStorage.getItem('notes');
-    let myArr = JSON.parse(data);
+    let storedNotes = localStorage.getItem('notes');
+    let myStoredNotesArray = JSON.parse(storedNotes);
 
-    if(myArr != null){
-        notes = myArr;
+    if(myStoredNotesArray != null){
+        notes = myStoredNotesArray;
     }
 }
 
@@ -31,11 +33,11 @@ function renderCheckedNotes() {
 }
 
 function getNoteTemplate(indexNote) {
-    return `<input type="checkbox" onclick="checkNote(${indexNote})"> ${notes[indexNote]}</br>`;
+    return `<div class="notes-card"><input type="checkbox" onclick="checkNote(${indexNote})"> ${notes[indexNote]}</br></div>`;
 }
 
 function getCheckedNoteTemplate(indexCheckedNote) {
-    return `<input type="checkbox" checked> ${checkedNotes[indexCheckedNote]} <button onclick="expungeNote(${indexCheckedNote})">&#10006;</button></br>`;
+    return `<input type="checkbox" checked> ${checkedNotes[indexCheckedNote]} <button onclick="deleteNote(${indexCheckedNote})">&#10006;</button></br>`;
 }
 
 function addNote() {
@@ -53,9 +55,7 @@ function addNote() {
 
 function checkNote(indexNote) {
     let checkedNote = notes.splice(indexNote, 1);
-
     checkedNotes.push(checkedNote);
-    localStorage.setItem("checkedNotes", JSON.stringify(checkedNotes));
 
     renderNotes();
     renderCheckedNotes();

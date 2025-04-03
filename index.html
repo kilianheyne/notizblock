@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projekt: Notizblock</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Projekt: Notizblock</title>
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="./styles/standard-style.css">
-</head>
-<body onload="renderNotes()">
-    <h1>Notizblock</h1>
-    <div>
-        <input type="text" id="note-input">
-        <button onclick="addNote()">Notiz speichern</button>
-    </div>
-    <div id="notes-content">
-        
-    </div>
-    <h2>Deine abgehakten Notizen</h2>
-    <div id="checked-content">
-
-    </div>
-    <script src="script.js"></script>
-</body>
+        <link rel="stylesheet" href="./styles/standard.css" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="./styles/notes.css">
+    </head>
+    <body onload="init(), renderNotes()">
+        <section>
+            <h1>Notizblock</h1>
+            <div>
+                <input type="text" id="note-input" />
+                <button onclick="addNote()">Notiz speichern</button>
+            </div>
+        </section>
+        <section>
+            <div id="notes-content"></div>
+        </section>
+        <section>
+            <h2>Deine abgehakten Notizen</h2>
+            <div id="checked-content"></div>
+        </section>
+        <script src="script.js"></script>
+    </body>
 </html>

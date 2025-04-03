@@ -1,0 +1,22 @@
+#notes-content{
+    height: 40dvh;
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    row-gap: 8%;
+}
+
+.notes-card{
+    display: flex; 
+    align-items: center;
+    height: 30px;
+    width: 40%; 
+    background: black; 
+    color: white; 
+    border-radius: 11px;
+    padding-left: 2%;
+    column-gap: 8%;
+    box-shadow: rgba(125, 123, 123, 0.699) 10px 5px;
+    flex-wrap: nowrap;
+}
